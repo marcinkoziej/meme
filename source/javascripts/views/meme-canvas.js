@@ -241,10 +241,18 @@ MEME.MemeCanvasView = Backbone.View.extend({
     // Create update function with draggable constraints:
     function update(evt) {
       evt.preventDefault();
-      model.set('backgroundPosition', {
-        x: Math.max(d.width-iw, Math.min(start.x - (origin.x - evt.clientX), iw)),
-        y: Math.max(d.height-ih, Math.min(start.y - (origin.y - evt.clientY), ih))
-      });
+
+      if (iw * 2 >= d.width && ih * 2 >= d.height) {
+        model.set('backgroundPosition', {
+          x: Math.max(d.width-iw, Math.min(start.x - (origin.x - evt.clientX), iw)),
+          y: Math.max(d.height-ih, Math.min(start.y - (origin.y - evt.clientY), ih))
+        });
+      } else {
+        model.set('backgroundPosition', {
+          x: Math.min(d.width-iw, Math.max(start.x - (origin.x - evt.clientX), iw)),
+          y: Math.min(d.height-ih, Math.max(start.y - (origin.y - evt.clientY), ih))
+        });
+      }
     }
 
     // Perform drag sequence:
