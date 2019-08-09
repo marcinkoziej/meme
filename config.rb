@@ -1,5 +1,6 @@
 # Reload the browser automatically whenever files change
 activate :livereload
+activate :sprockets
 
 ###
 # Compass
