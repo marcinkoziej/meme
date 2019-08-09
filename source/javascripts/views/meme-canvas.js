@@ -77,7 +77,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
       var x = padding;
       var y = padding;
 
-      ctx.font = d.fontSize +'pt '+ d.fontFamily;
+      ctx.font = d.fontSize +'px '+ d.fontFamily;
       ctx.fillStyle = d.fontColor;
       ctx.textBaseline = 'top';
 
@@ -104,26 +104,71 @@ MEME.MemeCanvasView = Backbone.View.extend({
         ctx.textAlign = 'left';
       }
 
-      var words = d.headlineText.split(' ');
-      var line  = '';
-
-      for (var n = 0; n < words.length; n++) {
-        var testLine  = line + words[n] + ' ';
-        var metrics   = ctx.measureText( testLine );
-        var testWidth = metrics.width;
-
-        if (testWidth > maxWidth && n > 0) {
-          ctx.fillText(line, x, y);
-          line = words[n] + ' ';
-          y += Math.round(d.fontSize * 1.5);
-        } else {
-          line = testLine;
-        }
+      var lines  = d.headlineText.split("\n");
+      for (var n = 0; n < lines.length; n++) {
+        ctx.fillText(lines[n], x, y);
+        y += d.fontSize * 1;
       }
 
-      ctx.fillText(line, x, y);
       ctx.shadowColor = 'transparent';
     }
+
+
+    function renderFooter(ctx) {
+      var maxWidth = Math.round(d.width * 0.6);
+      var x = padding;
+      var y = d.height - padding - d.smallerFontSize;
+
+      ctx.font = d.smallerFontSize +'px '+ d.fontFamily;
+      ctx.fillStyle = d.fontColor;
+      ctx.textBaseline = 'ideaographic';
+
+      // Text shadow:
+      if (d.textShadow) {
+        ctx.shadowColor = "#666";
+        ctx.shadowOffsetX = -2;
+        ctx.shadowOffsetY = 1;
+        ctx.shadowBlur = 10;
+      }
+
+      // Text alignment:
+      if (d.smallerTextAlign == 'center') {
+        ctx.textAlign = 'center';
+        x = d.width / 2;
+        y = d.height - d.height / 1.5;
+        maxWidth = d.width - d.width / 3;
+
+      } else if (d.smallerTextAlign == 'right' ) {
+        ctx.textAlign = 'right';
+        x = d.width - padding;
+
+      } else {
+        ctx.textAlign = 'left';
+      }
+
+      var lines  = d.footerText.split("\n");
+      y -= Math.round(d.smallerFontSize * 1) * (lines.length - 1);
+
+      for (var n = 0; n < lines.length; n++) {
+        ctx.fillText(lines[n], x, y);
+        y += d.smallerFontSize * 1;
+
+        // var testLine  = line + words[n] + ' ';
+        // var metrics   = ctx.measureText( testLine );
+        // var testWidth = metrics.width;
+
+        // if (testWidth > maxWidth && n > 0) {
+        //   ctx.fillText(line, x, y);
+        //   line = words[n] + ' ';
+        //   y -= Math.round(d.smallerFontSize * 1.5);
+        // } else {
+        //   line = testLine;
+        // }
+      }
+
+      ctx.shadowColor = 'transparent';
+    }
+
 
     function renderCredit(ctx) {
       ctx.textBaseline = 'bottom';
@@ -150,7 +195,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
         }
 
         ctx.globalAlpha = d.watermarkAlpha;
-        ctx.drawImage(m.watermark, 0, 0, bw, bh, d.width-padding-tw, d.height-padding-th, tw, th);
+        ctx.drawImage(m.watermark, 0, 0, bw, bh, d.width-tw, d.height-th, tw, th);
         ctx.globalAlpha = 1;
       }
     }
@@ -158,6 +203,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
     renderBackground(ctx);
     renderOverlay(ctx);
     renderHeadline(ctx);
+    renderFooter(ctx);
     renderCredit(ctx);
     renderWatermark(ctx);
 

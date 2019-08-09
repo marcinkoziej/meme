@@ -9,12 +9,16 @@ MEME.MemeModel = Backbone.Model.extend({
     creditSize: 12,
     downloadName: 'share',
     fontColor: 'white',
+    fontColorLight: 'white',
+    fontColorDark: '#3333cc',
     fontFamily: 'Helvetica Neue',
     fontFamilyOpts: ['Helvetica', 'Helvetica Neue', 'Comic Sans MS'],
     fontSize: 24,
+    smallerFontSize: 20,
     fontSizeOpts: [14, 24, 36],
-    headlineText: 'Write your own headline',
-    height: 378,
+    headlineText: 'Nazwa audycji',
+    footerText: 'Dzień i godzina',
+    height: 800,
     imageScale: 1,
     imageSrc: '',
     overlayAlpha: 0.5,
@@ -22,6 +26,7 @@ MEME.MemeModel = Backbone.Model.extend({
     overlayColorOpts: ['#000', '#777', '#2980b9'],
     paddingRatio: 0.05,
     textAlign: 'left',
+    smallerTextAlign: 'left',
     textAlignOpts: ['left', 'center', 'right'],
     textShadow: true,
     textShadowEdit: true,
@@ -29,7 +34,7 @@ MEME.MemeModel = Backbone.Model.extend({
     watermarkMaxWidthRatio: 0.25,
     watermarkSrc: '',
     watermarkOpts: [],
-    width: 755
+    width: 600
   },
 
   // Initialize with custom image members used for background and watermark:
