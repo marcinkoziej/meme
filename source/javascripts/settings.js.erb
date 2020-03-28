@@ -2,48 +2,46 @@ var MEME_SETTINGS = {
   creditText: '', // Default "credits" text.
   creditSize: 12, // Font size for credit text.
   downloadName: 'cover', // The name of the downloaded image file (will have a ".png" extension added).
-  fontColor: 'white', // Universal font color.
-  fontColorLight: 'white',
+  fontColor: 'black', // Universal font color.
+  fontColorLight: 'black',
   fontColorDark: '#3333cc',
 
   // Universal font family for texts:
   // Note that you'll need to included quoted font names as you would in CSS, ie: '"Knockout 28 B"'.
-  fontFamily: 'Avenir',
+  fontFamily: 'Barlow',
   // Font family options: set to empty array to disable font selector.
   // These options may also be formatted as {text:'Knockout', value:'"Knockout 28 B"'}.
   fontFamilyOpts: [],
   
   // Font size of main headline:
-  fontSize: 49,
-  smallerFontSize: 43,
+  fontSize: 38,
+  smallerFontSize: 29,
   // Font size options: set to empty array to disable font-size selector.
-  fontSizeOpts: [
-    {text: 'Standard', value: 49},
-    {text: 'Mniejszy', value: 43}
+  fontSizeOpts: [],
+  /* {text: 'Standard', value: 38}, */
+  /* {text: 'Mniejszy', value: 43} */
 
-  ],
-
-  headlineText: 'Tytuł', // Default headline text.
+  //headlineText: 'Tytuł', // Default headline text.
   height: 886, // Canvas rendering height.
   imageScale: 1, // Background image scale.
   imageSrc: '', // Default background image path. MUST reside on host domain, or use base64 data.
   overlayAlpha: 0.3, // Opacity of image overlay.
 
   // Image overlay color, or blank ('') for no overlay:
-  overlayColor: '#42a192',
+  overlayColor: '',
   // Overlay color options: set to empty array to disable overlay options selector.
-  overlayColorOpts: ['#42a192'],
+  overlayColorOpts: ['#42a192', 'rgb(51, 51, 204)', 'rgb(255, 72, 0)'],
   paddingRatio: 0.10, // Percentage of canvas width to use as edge padding.
   
   // Text alignment: valid settings are "left", "center", and "right".
   textAlign: 'left',
-  smallerTextAlign: 'right',
+  smallerTextAlign: 'left',
   // Text alignment options: set to empty array to disable alignment picker.
-  textAlignOpts: [
-    {text: 'Lewej', value: 'left'}, 
-    {text: 'Środka', value: 'center'}
+  textAlignOpts: [], 
+  /* {text: 'Lewej', value: 'left'} 
+    {text: 'Środka', value: 'center'}*/
     // {text: 'Prawej', value: 'right'}
-  ],
+  
 
   textShadow: false, // Text shadow toggle.
   textShadowEdit: false, // Toggles text shadow control within the editor.
@@ -53,15 +51,19 @@ var MEME_SETTINGS = {
   // Path to the watermark image source, or blank for no watermark:
   // Alternatively, use '<%#= asset_url("rk_template.png") %>' to populate the watermark with base64 data, avoiding Cross-Origin issues.
   // watermarkSrc: (localStorage && localStorage.getItem('meme_watermark')) || '<%= image_path("vox.png") %>',
-  watermarkSrc: '<%= image_path("rk_template.png") %>',
+  watermarkSrc: '<%= image_path("rk2_template.png") %>',
   
   // Watermark image options: set to empty array to disable watermark picker.
   // NOTE: only populate the "data" attributes with base64 data when concerned about Cross-Origin requests...
   // Otherwise, just leave "data" attributes blank and allow images to load from your server.
-  watermarkOpts: [
-    {text: 'Ciemne zdjęcie', value: '<%= image_path("rk_template.png") %>', data: '<%#= asset_url("vox.png") %>'},
-    {text: 'Jasne zdjęcie', value: '<%= image_path("rk_template_dark.png") %>', data: ''}
-  ],
+  watermarkOpts: [],
+  /* {text: 'Standard', value: '<%= image_path("rk2_template.png") %>', data: ''} */
 
-  width: 886 // Canvas rendering width.
+  width: 886, // Canvas rendering width.
+  bgViewport: {
+    x: 47,
+    y: 143,
+    width: 838 - 47,
+    height: 788 - 140
+  }
 };

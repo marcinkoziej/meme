@@ -6,6 +6,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
 
   initialize: function() {
     var canvas = document.createElement('canvas');
+    canvas.style.letterSpacing = "1.5px";
     var $container = MEME.$('#meme-canvas');
 
     // Display canvas, if enabled:
@@ -74,8 +75,8 @@ MEME.MemeCanvasView = Backbone.View.extend({
 
     function renderHeadline(ctx) {
       var maxWidth = Math.round(d.width * 0.75);
-      var x = padding;
-      var y = padding;
+      var x = 74;
+      var y = 49;
 
       ctx.font = d.fontSize +'px '+ d.fontFamily;
       ctx.fillStyle = d.fontColor;
@@ -104,8 +105,8 @@ MEME.MemeCanvasView = Backbone.View.extend({
         ctx.textAlign = 'left';
       }
 
-      var lines  = d.headlineText.split("\n");
-      for (var n = 0; n < lines.length; n++) {
+      var lines  = d.headlineText.toUpperCase().split("\n");
+      for (var n = 0; n < lines.length && n < 2; n++) {
         ctx.fillText(lines[n], x, y);
         y += d.fontSize * 1;
       }
@@ -116,8 +117,8 @@ MEME.MemeCanvasView = Backbone.View.extend({
 
     function renderFooter(ctx) {
       var maxWidth = Math.round(d.width * 0.6);
-      var x = padding;
-      var y = d.height - padding - d.smallerFontSize;
+      var x = 47;
+      var y = 850;
 
       ctx.font = d.smallerFontSize +'px '+ d.fontFamily;
       ctx.fillStyle = d.fontColor;
@@ -146,12 +147,14 @@ MEME.MemeCanvasView = Backbone.View.extend({
         ctx.textAlign = 'left';
       }
 
-      var lines  = d.footerText.split("\n");
-      y -= Math.round(d.smallerFontSize * 1) * (lines.length - 1);
+      var lines  = d.footerText.toUpperCase().split("\n");
+      // y -= Math.round(d.smallerFontSize * 1) * 2; // * (lines.length - 1);
+      // Barlow-Medium - size 29px draws letters of height 20px with 27px lead (not 29, weird)
+      y -= (20 * 2 + 7); // go back up 2 lines of text with space between
 
-      for (var n = 0; n < lines.length; n++) {
+      for (var n = 0; n < lines.length && n < 2; n++) {
         ctx.fillText(lines[n], x, y);
-        y += d.smallerFontSize * 1;
+        y += Math.round(d.smallerFontSize * 0.93);
 
         // var testLine  = line + words[n] + ' ';
         // var metrics   = ctx.measureText( testLine );
@@ -202,10 +205,10 @@ MEME.MemeCanvasView = Backbone.View.extend({
 
     renderBackground(ctx);
     renderOverlay(ctx);
+    renderWatermark(ctx);
     renderHeadline(ctx);
     renderFooter(ctx);
     renderCredit(ctx);
-    renderWatermark(ctx);
 
     var data = this.canvas.toDataURL(); //.replace('image/png', 'image/octet-stream');
     this.$('#meme-download').attr({
@@ -231,8 +234,10 @@ MEME.MemeCanvasView = Backbone.View.extend({
     // Configure drag settings:
     var model = this.model;
     var d = model.toJSON();
+    // Inserted image half width / center
     var iw = model.background.width * d.imageScale / 2;
     var ih = model.background.height * d.imageScale / 2;
+    // origin of dragging (here the user clicked)
     var origin = {x: evt.clientX, y: evt.clientY};
     var start = d.backgroundPosition;
     start.x = start.x || d.width / 2;
@@ -242,15 +247,19 @@ MEME.MemeCanvasView = Backbone.View.extend({
     function update(evt) {
       evt.preventDefault();
 
-      if (iw * 2 >= d.width && ih * 2 >= d.height) {
+      if (iw * 2 >= d.bgViewport.width && ih * 2 >= d.bgViewport.height) {
         model.set('backgroundPosition', {
-          x: Math.max(d.width-iw, Math.min(start.x - (origin.x - evt.clientX), iw)),
-          y: Math.max(d.height-ih, Math.min(start.y - (origin.y - evt.clientY), ih))
+          x: d.bgViewport.x + Math.max(d.bgViewport.width-iw,
+                                       Math.min(start.x - (origin.x - evt.clientX), iw)),
+          y: d.bgViewport.y + Math.max(d.bgViewport.height-ih,
+                                       Math.min(start.y - (origin.y - evt.clientY), ih))
         });
       } else {
         model.set('backgroundPosition', {
-          x: Math.min(d.width-iw, Math.max(start.x - (origin.x - evt.clientX), iw)),
-          y: Math.min(d.height-ih, Math.max(start.y - (origin.y - evt.clientY), ih))
+          x: d.bgViewport.x + Math.min(d.bgViewport.width-iw,
+                                       Math.max(start.x - (origin.x - evt.clientX), iw)),
+          y: d.bgViewport.y + Math.min(d.bgViewport.height-ih,
+                                       Math.max(start.y - (origin.y - evt.clientY), ih))
         });
       }
     }
