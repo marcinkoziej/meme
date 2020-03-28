@@ -17,7 +17,7 @@ MEME.MemeModel = Backbone.Model.extend({
     smallerFontSize: 20,
     fontSizeOpts: [14, 24, 36],
     headlineText: "Nazwa audycji\nNazwa odcinka",
-    footerText: "Dzień\nGodziny",
+    footerText: "Dzień tygodnia, DD.MM\nGG:MM - GG:MM",
     height: 800,
     imageScale: 1,
     imageSrc: '',
