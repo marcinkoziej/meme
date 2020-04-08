@@ -6,7 +6,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
 
   initialize: function() {
     var canvas = document.createElement('canvas');
-    canvas.style.letterSpacing = "1.5px";
+    canvas.style.letterSpacing = "0.095em";
     var $container = MEME.$('#meme-canvas');
 
     // Display canvas, if enabled:
@@ -75,7 +75,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
 
     function renderHeadline(ctx) {
       var maxWidth = Math.round(d.width * 0.75);
-      var x = 74;
+      var x = 73;
       var y = 49;
 
       ctx.font = d.fontSize +'px '+ d.fontFamily;
@@ -117,7 +117,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
 
     function renderFooter(ctx) {
       var maxWidth = Math.round(d.width * 0.6);
-      var x = 47;
+      var x = 44;
       var y = 850;
 
       ctx.font = d.smallerFontSize +'px '+ d.fontFamily;
@@ -210,7 +210,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
     renderFooter(ctx);
     renderCredit(ctx);
 
-    var data = this.canvas.toDataURL(); //.replace('image/png', 'image/octet-stream');
+    var data = this.canvas.toDataURL("image/png", 1); //.replace('image/png', 'image/octet-stream');
     this.$('#meme-download').attr({
       'href': data,
       'download': (d.downloadName || 'share') + '.png'
